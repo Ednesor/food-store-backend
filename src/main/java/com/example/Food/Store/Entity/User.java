@@ -1,6 +1,9 @@
 package com.example.Food.Store.Entity;
 
+import com.example.Food.Store.Constants.Role;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,5 +21,8 @@ public class User extends Base{
     private String username;
     private String email;
     private String password;
-    private String role;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private Role role = Role.CLIENTE;
 }
