@@ -1,12 +1,12 @@
 package com.example.Food.Store.Repository;
 
-import com.example.Food.Store.Entity.User;
+import com.example.Food.Store.Entity.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+    Optional<Categoria> findByNombre(String nombre);
 }

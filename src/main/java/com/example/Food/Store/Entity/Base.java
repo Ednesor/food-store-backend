@@ -22,7 +22,7 @@ public class Base {
     private Long id;
 
     @Builder.Default
-    private Boolean deleted = true;
+    private Boolean deleted = false;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
