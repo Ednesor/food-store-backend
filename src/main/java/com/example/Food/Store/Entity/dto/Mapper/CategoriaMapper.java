@@ -30,3 +30,4 @@ public class CategoriaMapper {
         categoria.setUrlImagen(edit.urlImagen());
     }
 }
+

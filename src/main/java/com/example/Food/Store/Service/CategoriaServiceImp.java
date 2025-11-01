@@ -6,6 +6,7 @@ import com.example.Food.Store.Entity.dto.Categoria.CategoriaDto;
 import com.example.Food.Store.Entity.dto.Categoria.CategoriaEdit;
 import com.example.Food.Store.Entity.dto.Mapper.CategoriaMapper;
 import com.example.Food.Store.Repository.CategoriaRepository;
+import com.example.Food.Store.Repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class CategoriaServiceImp implements CategoriaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private ProductoRepository productoRepository;
 
     @Override
     public CategoriaDto save(CategoriaCreate c) {
@@ -56,6 +60,13 @@ public class CategoriaServiceImp implements CategoriaService {
 
     @Override
     public void delete(Long id) {
-        categoriaRepository.deleteById(id);
+        Categoria categoria = categoriaRepository.findById(id)
+                .orElseThrow(() -> new NullPointerException("No se encontro la categoria con el id " + id));
+
+        if (!productoRepository.findByCategoriaId(id).isEmpty()) {
+            throw new IllegalStateException("No se puede eliminar la categoría porque tiene productos asociados.");
+        }
+
+        categoriaRepository.delete(categoria);
     }
 }

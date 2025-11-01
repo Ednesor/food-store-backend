@@ -58,6 +58,8 @@ public class CategoriaController {
         try {
             categoriaService.delete(id);
             return ResponseEntity.ok("Categoria eliminada correctamente");
+        }catch (IllegalStateException i) {
+            return ResponseEntity.badRequest().body("Alerta: " + i.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Ocurrio un error: " + e.getMessage());
         }
