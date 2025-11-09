@@ -7,6 +7,10 @@ import java.util.List;
 public record PedidoCreate(
     Double total,
     List<DetallePedidoCreate> detallePedidos,
-    Long usuarioId
+    Long usuarioId,
+    String telefono,
+    String direccion,
+    String metodoPago,
+    String notas
 ) {
 }
