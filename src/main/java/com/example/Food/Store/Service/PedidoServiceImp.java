@@ -4,6 +4,7 @@ import com.example.Food.Store.Constants.Estado;
 import com.example.Food.Store.Entity.DetallePedido;
 import com.example.Food.Store.Entity.Pedido;
 import com.example.Food.Store.Entity.Producto;
+import com.example.Food.Store.Entity.User;
 import com.example.Food.Store.Entity.dto.DetallePedido.DetallePedidoCreate;
 import com.example.Food.Store.Entity.dto.DetallePedido.DetalllePedidoEdit;
 import com.example.Food.Store.Entity.dto.Mapper.DetallePedidoMapper;
@@ -15,6 +16,7 @@ import com.example.Food.Store.Entity.dto.Pedido.PedidoEdit;
 import com.example.Food.Store.Repository.DetallePedidoRepository;
 import com.example.Food.Store.Repository.PedidoRepository;
 import com.example.Food.Store.Repository.ProductoRepository;
+import com.example.Food.Store.Repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,11 +39,18 @@ public class PedidoServiceImp implements PedidoService {
     @Autowired
     private DetallePedidoRepository detallePedidoRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     @Transactional
     public PedidoDto save(PedidoCreate p) {
+
+        User usuario = userRepository.findById(p.usuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + p.usuarioId()));
+
         // Crear la entidad Pedido (puede venir del mapper)
-        Pedido pedido = PedidoMapper.toEntity(p);
+        Pedido pedido = PedidoMapper.toEntity(p, usuario);
 
         List<DetallePedido> detalles = new ArrayList<>();
 
@@ -79,8 +88,18 @@ public class PedidoServiceImp implements PedidoService {
     }
 
     @Override
+    public List<PedidoDto> findAllByUsuarioId(Long usuarioId) {
+        List<Pedido> pedidos = pedidoRepository.findByUsuarioId(usuarioId);
+        return pedidos.stream()
+                .map(PedidoMapper::toDto)
+                .toList();
+    }
+
+    @Override
     public PedidoDto findById(Long id) {
-        return null;
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido no encontrado con id: " + id));
+        return PedidoMapper.toDto(pedido);
     }
 
     @Override
@@ -94,16 +113,13 @@ public class PedidoServiceImp implements PedidoService {
     @Override
     @Transactional
     public void updateStatusCancel(Long id) {
-        // 1️⃣ Buscar el pedido
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido no encontrado con id: " + id));
 
-        // 2️⃣ Verificar que no esté ya cancelado
         if (pedido.getEstado() == Estado.CANCELADO) {
             throw new RuntimeException("El pedido ya está cancelado");
         }
 
-        // 3️⃣ Restaurar el stock de cada producto
         for (DetallePedido detalle : pedido.getDetallePedidos()) {
             Producto producto = detalle.getProducto();
 
@@ -119,10 +135,8 @@ public class PedidoServiceImp implements PedidoService {
             productoRepository.save(producto);
         }
 
-        // 4️⃣ Cambiar el estado del pedido
         pedido.setEstado(Estado.CANCELADO);
 
-        // 5️⃣ Guardar los cambios
         pedidoRepository.save(pedido);
     }
 

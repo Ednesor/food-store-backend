@@ -12,6 +12,7 @@ public interface PedidoService {
     PedidoDto save(PedidoCreate p);
     PedidoDto findById(Long id);
     List<PedidoDto> findAll();
+    List<PedidoDto> findAllByUsuarioId(Long usuarioId);
     void updateStatusCancel(Long id);
     PedidoDto updateStatus(Long id, Estado nuevoEstado);
 }

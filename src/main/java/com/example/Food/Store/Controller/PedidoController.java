@@ -62,4 +62,13 @@ public class PedidoController {
             return ResponseEntity.badRequest().body("Ocurrio un error: " + e.getMessage());
         }
     }
+
+    @GetMapping("/getAll/{id}")
+    public ResponseEntity<?> getAllByUserId (@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(pedidoService.findAllByUsuarioId(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Ocurrio un error: " + e.getMessage());
+        }
+    }
 }

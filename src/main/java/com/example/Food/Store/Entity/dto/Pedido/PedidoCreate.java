@@ -6,6 +6,7 @@ import java.util.List;
 
 public record PedidoCreate(
     Double total,
-    List<DetallePedidoCreate> detallePedidos
+    List<DetallePedidoCreate> detallePedidos,
+    Long usuarioId
 ) {
 }

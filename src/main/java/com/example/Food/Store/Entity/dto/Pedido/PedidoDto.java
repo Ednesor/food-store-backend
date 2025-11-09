@@ -11,6 +11,7 @@ public record PedidoDto(
         Double total,
         Estado estado,
         LocalDate fecha,
+        Long userId,
         List<DetallePedido> detallePedidos
 ) {
 }

@@ -2,10 +2,7 @@ package com.example.Food.Store.Entity;
 
 import com.example.Food.Store.Constants.Estado;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -33,4 +30,7 @@ public class Pedido extends Base{
     @JsonManagedReference
     private List<DetallePedido> detallePedidos = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private User usuario;
 }
