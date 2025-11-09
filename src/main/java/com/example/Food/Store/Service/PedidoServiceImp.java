@@ -59,6 +59,9 @@ public class PedidoServiceImp implements PedidoService {
                     .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + detalleCreate.productoId()));
 
             //verficar stock
+            if(detalleCreate.cantidad() <= 0){
+                throw new RuntimeException("La cantidad debe ser mayor a cero para el producto: " + producto.getNombre());
+            }
             if (producto.getStock() < detalleCreate.cantidad()) {
                 throw new RuntimeException("Stock insuficiente para el producto: " + producto.getNombre());
             }
