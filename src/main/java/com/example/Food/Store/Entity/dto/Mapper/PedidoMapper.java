@@ -14,6 +14,10 @@ public class PedidoMapper {
         return Pedido.builder()
                 .total(p.total())
                 .usuario(usuario)
+                .telefono(p.telefono())
+                .direccion(p.direccion())
+                .metodoPago(p.metodoPago())
+                .notas(p.notas())
                 .build();
     }
 
@@ -24,8 +28,12 @@ public class PedidoMapper {
                 p.getTotal(),
                 p.getEstado(),
                 p.getFecha(),
-                p.getUsuario() != null ? p.getUsuario().getId() : null,
-                p.getDetallePedidos()
+                UserMapper.toDto(p.getUsuario()), // Antes: p.getUsuario() != null ? p.getUsuario().getId() : null,
+                p.getDetallePedidos(),
+                p.getTelefono(),
+                p.getDireccion(),
+                p.getMetodoPago(),
+                p.getNotas()
         );
     }
 
