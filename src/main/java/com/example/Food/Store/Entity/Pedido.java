@@ -25,6 +25,10 @@ public class Pedido extends Base{
 
     @Builder.Default
     private LocalDate fecha = LocalDate.now();
+    private String telefono;
+    private String direccion;
+    private String metodoPago;
+    private String notas;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
