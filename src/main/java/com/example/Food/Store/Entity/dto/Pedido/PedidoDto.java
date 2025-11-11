@@ -2,6 +2,7 @@ package com.example.Food.Store.Entity.dto.Pedido;
 
 import com.example.Food.Store.Constants.Estado;
 import com.example.Food.Store.Entity.DetallePedido;
+import com.example.Food.Store.Entity.dto.User.UserDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,7 +12,11 @@ public record PedidoDto(
         Double total,
         Estado estado,
         LocalDate fecha,
-        Long userId,
-        List<DetallePedido> detallePedidos
+        UserDto usuario, // Antes: Long userId
+        List<DetallePedido> detallePedidos,
+        String telefono,
+        String direccion,
+        String metodoPago,
+        String notas
 ) {
 }
