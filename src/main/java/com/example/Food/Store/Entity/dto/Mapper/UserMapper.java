@@ -18,13 +18,15 @@ public class UserMapper {
 
     public static UserDto toDto(User u){
         if (u==null) return null;
+        // Comprobamos si el rol es nulo antes de llamar a .name()
+        String roleName = (u.getRole() != null) ? u.getRole().name() : null;
         return new UserDto(
                 u.getId(),
                 u.getName(),
                 u.getLastname(),
                 u.getUsername(),
                 u.getEmail(),
-                u.getRole().name()
+                roleName
         );
     }
 
